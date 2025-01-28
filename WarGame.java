@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 class Card {
     private String suit;
@@ -75,10 +76,14 @@ public class WarGame {
             }
         }
 
-        playGame(player1Deck, player2Deck);
+        try {
+            playGame(player1Deck, player2Deck);
+        } catch (EOFException e) {
+            System.out.println("\n" + CYAN + BOLD + "Game exited prematurely. Thank you for playing!" + RESET);
+        }
     }
 
-    public static void playGame(List<Card> player1Deck, List<Card> player2Deck) {
+    public static void playGame(List<Card> player1Deck, List<Card> player2Deck) throws EOFException {
         Scanner scanner = new Scanner(System.in);
 
         // Score counters
@@ -100,6 +105,9 @@ public class WarGame {
             }
 
             System.out.println(CYAN + BOLD + "Press Enter to draw cards..." + RESET);
+            if (!scanner.hasNextLine()) {
+                throw new EOFException();  // Handle EOF (Ctrl+D) exit
+            }
             scanner.nextLine();
             System.out.println();
 
